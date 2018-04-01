@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hazelcast-client xsi:schemaLocation="http://www.hazelcast.com/schema/client-config hazelcast-client-config-3.7.xsd"
+                  xmlns="http://www.hazelcast.com/schema/client-config"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!--todo: add support for <import> based on environment variable dev/prod-->
+  <!--todo: move all configs to ZK-->
+
+   <group>
+    <name>ronis</name>
+    <password>ronis</password>
+  </group> 
+
+  <properties>
+    <property name="hazelcast.client.shuffle.member.list">true</property>
+    <property name="hazelcast.client.heartbeat.timeout">60000</property>
+    <property name="hazelcast.client.heartbeat.interval">5000</property>
+    <property name="hazelcast.client.event.thread.count">5</property>
+    <property name="hazelcast.client.event.queue.capacity">1000000</property>
+    <property name="hazelcast.client.invocation.timeout.seconds">120</property>
+  </properties>
+
+  <network>
+    <smart-routing>true</smart-routing>
+    <redo-operation>true</redo-operation>
+    <connection-timeout>60000</connection-timeout>
+    <connection-attempt-period>3000</connection-attempt-period>
+    <connection-attempt-limit>2</connection-attempt-limit>
+    <socket-options>
+      <tcp-no-delay>false</tcp-no-delay>
+      <keep-alive>true</keep-alive>
+      <reuse-address>false</reuse-address>
+      <linger-seconds>1</linger-seconds>
+      <timeout>-1</timeout>
+      <buffer-size>32</buffer-size>
+    </socket-options>
+    <ssl enabled="false"/>
+      <!--todo: enable ^ in prod post POC-->
+  </network>
+
+  <executor-pool-size>10000</executor-pool-size>
+
+  <serialization>
+    <!--todo: consider compression if memory storage is limited-->
+    <portable-version>0</portable-version>
+  </serialization>
+
+  <native-memory enabled="false" allocator-type="POOLED">
+    <!--todo: consider using native-memory rather than heap-->
+    <size unit="MEGABYTES" value="128" />
+    <min-block-size>1</min-block-size>
+    <page-size>1</page-size>
+    <metadata-space-percentage>40.5</metadata-space-percentage>
+  </native-memory>
+
+  <load-balancer type="round-robin"/>
+
+</hazelcast-client>
